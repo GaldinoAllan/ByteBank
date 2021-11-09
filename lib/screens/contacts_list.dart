@@ -11,7 +11,7 @@ class ContactsList extends StatelessWidget {
         title: Text('Contacts'),
       ),
       body: FutureBuilder<List<Contact>>(
-        initialData: List(),
+        initialData: [],
         future: findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
@@ -33,11 +33,9 @@ class ContactsList extends StatelessWidget {
               break;
             case ConnectionState.done:
               final List<Contact> contacts = snapshot.data;
-
               return ListView.builder(
                 itemBuilder: (context, index) {
                   final Contact contact = contacts[index];
-
                   return _ContactItem(contact);
                 },
                 itemCount: contacts.length,
