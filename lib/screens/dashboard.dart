@@ -1,4 +1,5 @@
 import 'package:bytebank/screens/contacts_list.dart';
+import 'package:bytebank/screens/transactions_list.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatelessWidget {
@@ -22,14 +23,21 @@ class Dashboard extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: <Widget>[
-                  _FeatureItem("Transfer", Icons.monetization_on,
-                      onTap: () => _showContactsList(context)),
+                  _FeatureItem(
+                    "Transfer",
+                    Icons.monetization_on,
+                    onTap: () => _showNextPage(
+                      context,
+                      ContactsList(),
+                    ),
+                  ),
                   _FeatureItem(
                     "Transaction Feed",
                     Icons.description,
-                    onTap: () {
-                      print("transaction feed was clicked");
-                    },
+                    onTap: () => _showNextPage(
+                      context,
+                      TransactionsList(),
+                    ),
                   ),
                 ],
               ),
@@ -40,10 +48,10 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  void _showContactsList(BuildContext context) {
+  void _showNextPage(BuildContext context, Widget widget) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => ContactsList(),
+        builder: (context) => widget,
       ),
     );
   }
@@ -54,7 +62,9 @@ class _FeatureItem extends StatelessWidget {
   final IconData icon;
   final Function onTap;
 
-  _FeatureItem(this.name, this.icon, {@required this.onTap});
+  _FeatureItem(this.name, this.icon, {@required this.onTap})
+      : assert(icon != null),
+        assert(onTap != null);
 
   @override
   Widget build(BuildContext context) {
