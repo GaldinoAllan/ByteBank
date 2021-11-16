@@ -5,24 +5,14 @@ import 'package:bytebank/http/webclient.dart';
 import 'package:bytebank/models/transaction.dart';
 
 class TransactionWebClient {
-  List<Transaction> _toTransactions(Response response) {
-    final List<dynamic> decodedJson = jsonDecode(response.body);
-    final List<Transaction> transactions = [];
-    for (Map<String, dynamic> transactionJson in decodedJson) {
-      transactions.add(Transaction.fromJson(transactionJson));
-    }
-    return transactions;
-  }
-
-  Transaction _toTransaction(Response response) {
-    Map<String, dynamic> json = jsonDecode(response.body);
-    return Transaction.fromJson(json);
-  }
-
   Future<List<Transaction>> findAll() async {
     final Response response =
         await client.get(baseUrl).timeout(Duration(seconds: 5));
-    return _toTransactions(response);
+    final List<dynamic> decodedJson = jsonDecode(response.body);
+
+    return decodedJson
+        .map((dynamic json) => Transaction.fromJson(json))
+        .toList();
   }
 
   Future<Transaction> save(Transaction transaction) async {
@@ -36,6 +26,6 @@ class TransactionWebClient {
       body: transactionJson,
     );
 
-    return _toTransaction(response);
+    return Transaction.fromJson(jsonDecode(response.body));
   }
 }
