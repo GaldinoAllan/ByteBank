@@ -17,6 +17,18 @@ class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final TransactionWebClient _webClient = TransactionWebClient();
 
+  void _save(
+    Transaction transactionCreated,
+    String password,
+    BuildContext context,
+  ) async {
+    _webClient.save(transactionCreated, password).then((transaction) {
+      if (transaction != null) {
+        Navigator.pop(context);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,16 +79,12 @@ class _TransactionFormState extends State<TransactionForm> {
                           Transaction(value, widget.contact);
                       showDialog(
                         context: context,
-                        builder: (context) => TransactionAuthDialog(
-                          onConfirm: (password) {
-                            _webClient
-                                .save(transactionCreated, password)
-                                .then((transaction) {
-                              if (transaction != null) {
-                                Navigator.pop(context);
-                              }
-                            });
-                          },
+                        builder: (contextDialog) => TransactionAuthDialog(
+                          onConfirm: (password) => _save(
+                            transactionCreated,
+                            password,
+                            context,
+                          ),
                         ),
                       );
                     },
