@@ -7,4 +7,4 @@ final Client client = InterceptedClient.build(
   requestTimeout: Duration(seconds: 5),
 );
 
-final Uri baseUrl = Uri.parse('http://192.168.15.248:8080/transactions');
+final Uri baseUrl = Uri.parse('http://192.168.15.48:8080/transactions');
