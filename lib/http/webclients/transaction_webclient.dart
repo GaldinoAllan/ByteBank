@@ -11,8 +11,7 @@ class TransactionWebClient {
   };
 
   Future<List<Transaction>> findAll() async {
-    final Response response =
-        await client.get(baseUrl).timeout(Duration(seconds: 5));
+    final Response response = await client.get(baseUrl);
     final List<dynamic> decodedJson = jsonDecode(response.body);
 
     return decodedJson
@@ -22,6 +21,7 @@ class TransactionWebClient {
 
   Future<Transaction> save(Transaction transaction, String password) async {
     final String transactionJson = jsonEncode(transaction.toJson());
+
     final Response response = await client.post(
       baseUrl,
       headers: {
@@ -35,6 +35,12 @@ class TransactionWebClient {
       return Transaction.fromJson(jsonDecode(response.body));
     }
 
-    throw Exception(_statusCodeResponses[response.statusCode]);
+    throw HttpException(_statusCodeResponses[response.statusCode]);
   }
+}
+
+class HttpException implements Exception {
+  final String message;
+
+  HttpException(this.message);
 }
