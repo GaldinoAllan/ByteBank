@@ -8,6 +8,7 @@ class TransactionWebClient {
   static final Map<int, String> _statusCodeResponses = {
     400: 'There was an error submitting the transaction',
     401: 'Authentication failed',
+    409: 'Transaction already exists!'
   };
 
   Future<List<Transaction>> findAll() async {
@@ -22,6 +23,8 @@ class TransactionWebClient {
   Future<Transaction> save(Transaction transaction, String password) async {
     final String transactionJson = jsonEncode(transaction.toJson());
 
+    await Future.delayed(Duration(seconds: 10));
+
     final Response response = await client.post(
       baseUrl,
       headers: {
@@ -35,7 +38,13 @@ class TransactionWebClient {
       return Transaction.fromJson(jsonDecode(response.body));
     }
 
-    throw HttpException(_statusCodeResponses[response.statusCode]);
+    throw HttpException(_getMessage(response.statusCode));
+  }
+
+  String _getMessage(int statusCode) {
+    return _statusCodeResponses.containsKey(statusCode)
+        ? _statusCodeResponses[statusCode]
+        : 'Unknown error';
   }
 }
 
