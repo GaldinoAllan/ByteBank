@@ -1,7 +1,15 @@
 import 'package:bytebank/screens/dashboard.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
+
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
   runApp(BytebankApp());
 }
 
@@ -13,7 +21,7 @@ class BytebankApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.green[900],
         buttonTheme: ButtonThemeData(
-          buttonColor: Colors.blueAccent[700],
+          buttonColor: Colors.green[700],
           textTheme: ButtonTextTheme.primary,
         ),
       ),
