@@ -25,7 +25,7 @@ class BytebankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: bytebankTheme,
-      home: Dashboard(),
+      home: DashboardContainer(),
     );
   }
 }

@@ -1,13 +1,27 @@
 import 'package:bytebank/screens/contacts_list.dart';
+import 'package:bytebank/screens/name.dart';
 import 'package:bytebank/screens/transactions_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Dashboard extends StatelessWidget {
+class DashboardContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => NameCubit("Allan"),
+      child: DashboardView(),
+    );
+  }
+}
+
+class DashboardView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final name = context.read<NameCubit>().state;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard'),
+        title: Text('Welcome $name'),
       ),
       body: SafeArea(
         minimum: const EdgeInsets.only(bottom: 16),
@@ -26,18 +40,17 @@ class Dashboard extends StatelessWidget {
                   _FeatureItem(
                     "Transfer",
                     Icons.monetization_on,
-                    onTap: () => _showNextPage(
-                      context,
-                      ContactsList(),
-                    ),
+                    onTap: () => _showContactsList(context),
                   ),
                   _FeatureItem(
                     "Transaction Feed",
                     Icons.description,
-                    onTap: () => _showNextPage(
-                      context,
-                      TransactionsList(),
-                    ),
+                    onTap: () => _showTransactionsList(context),
+                  ),
+                  _FeatureItem(
+                    "Change name",
+                    Icons.person_outline,
+                    onTap: () => _showNameContainer(context),
                   ),
                 ],
               ),
@@ -48,10 +61,29 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  void _showNextPage(BuildContext context, Widget widget) {
+  void _showContactsList(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => widget,
+        builder: (context) => ContactsList(),
+      ),
+    );
+  }
+
+  void _showTransactionsList(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => TransactionsList(),
+      ),
+    );
+  }
+
+  void _showNameContainer(BuildContext blocContext) {
+    Navigator.of(blocContext).push(
+      MaterialPageRoute(
+        builder: (context) => BlocProvider.value(
+          value: BlocProvider.of<NameCubit>(blocContext),
+          child: NameContainer(),
+        ),
       ),
     );
   }
