@@ -1,3 +1,4 @@
+import 'package:bytebank/components/container.dart';
 import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
@@ -5,9 +6,20 @@ import 'package:bytebank/screens/contact_form.dart';
 import 'package:bytebank/screens/transaction_form.dart';
 import 'package:flutter/material.dart';
 
-class ContactsList extends StatelessWidget {
-  final ContactDao _dao = ContactDao();
+class ContactsListContainer extends BlocContainer {
+  @override
+  Widget build(BuildContext context) {
+    return ContactsListView();
+  }
+}
 
+class ContactsListView extends StatefulWidget {
+  final ContactDao _dao = ContactDao();
+  @override
+  _ContactsListState createState() => _ContactsListState();
+}
+
+class _ContactsListState extends State<ContactsListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +28,7 @@ class ContactsList extends StatelessWidget {
       ),
       body: FutureBuilder<List<Contact>>(
         initialData: [],
-        future: _dao.findAll(),
+        future: widget._dao.findAll(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.none:
@@ -42,16 +54,25 @@ class ContactsList extends StatelessWidget {
           return Text('Unknown error, please call support!');
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ContactForm(),
-          ),
-        ),
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: buildAddContactButton(context),
     );
   }
+
+  FloatingActionButton buildAddContactButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => Navigator.of(context)
+          .push(
+            MaterialPageRoute(
+              builder: (context) => ContactForm(),
+            ),
+          )
+          .then((value) => update()),
+      child: Icon(Icons.add),
+    );
+  }
+
+  // MELHORE
+  update() => setState(() {});
 }
 
 class _ContactItem extends StatelessWidget {
