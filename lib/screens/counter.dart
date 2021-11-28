@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+// exemplo de contador usando BloC em duas variações
 class CounterCubit extends Cubit<int> {
   CounterCubit() : super(0);
 
@@ -25,7 +26,7 @@ class CounterView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Nosso contador'),
+        title: Text('Counter'),
       ),
       body: Center(
         child: BlocBuilder<CounterCubit, int>(builder: (context, state) {
