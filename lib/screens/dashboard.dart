@@ -17,11 +17,11 @@ class DashboardContainer extends StatelessWidget {
 class DashboardView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final name = context.read<NameCubit>().state;
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome $name'),
+        title: BlocBuilder<NameCubit, String>(
+          builder: (context, state) => Text('Welcome $state'),
+        ),
       ),
       body: SafeArea(
         minimum: const EdgeInsets.only(bottom: 16),
