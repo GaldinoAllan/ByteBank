@@ -119,11 +119,7 @@ class _ContactItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => TransactionForm(contact),
-          ),
-        ),
+        onTap: () => push(context, TransactionFormContainer(contact)),
         title: Text(
           contact.name,
           style: TextStyle(fontSize: 24),
