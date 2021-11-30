@@ -23,7 +23,7 @@ class Dashboard extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: <Widget>[
-                  _FeatureItem(
+                  FeatureItem(
                     "Transfer",
                     Icons.monetization_on,
                     onTap: () => _showNextPage(
@@ -31,7 +31,7 @@ class Dashboard extends StatelessWidget {
                       ContactsList(),
                     ),
                   ),
-                  _FeatureItem(
+                  FeatureItem(
                     "Transaction Feed",
                     Icons.description,
                     onTap: () => _showNextPage(
@@ -57,12 +57,12 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-class _FeatureItem extends StatelessWidget {
+class FeatureItem extends StatelessWidget {
   final String name;
   final IconData icon;
   final Function onTap;
 
-  _FeatureItem(this.name, this.icon, {@required this.onTap})
+  FeatureItem(this.name, this.icon, {@required this.onTap})
       : assert(icon != null),
         assert(onTap != null);
 
